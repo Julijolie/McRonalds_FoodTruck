@@ -8,14 +8,15 @@ import (
 )
 
 type Produto struct {
-	ID        int
-	Nome      string
-	Descricao string
-	Valor     float64
+	ID         int
+	Nome       string
+	Descricao  string
+	Valor      float64
 	Quantidade int
 }
 
 var produtos []Produto
+var proximoId = 1
 
 func main() {
 	for {
@@ -44,13 +45,16 @@ func main() {
 		case 3: //busca pelo id
 			buscaProduto()
 
-		case 4:
-			// remover um produto
-			fmt.Println("Remover Produto")
+		case 4: // remover um produto
+			fmt.Print("Digite o ID do produto que você deseja remover: ")
+			var idParaRemover int
+			fmt.Scanln(&idParaRemover)
+			removeProdutoPorID(idParaRemover)
 
 		case 5:
 			// remover todos os produtos
-			fmt.Println("Busca do produto")
+			produtos = nil
+			fmt.Println("Todos os produtos foram removido")
 
 		case 6:
 			os.Exit(0)
@@ -67,7 +71,6 @@ func cadastraProduto() {
 
 	for {
 		novoProduto := Produto{}
-		novoProduto.ID = len(produtos) + 1
 
 		fmt.Print("Nome do produto (digite -1 para sair): ")
 		scanner.Scan()
@@ -77,6 +80,9 @@ func cadastraProduto() {
 			break
 		}
 		novoProduto.Nome = nome
+
+		novoProduto.ID = proximoId
+		proximoId++
 
 		fmt.Print("Descrição do produto: ")
 		scanner.Scan()
@@ -110,26 +116,36 @@ func cadastraProduto() {
 	}
 }
 
-func produtosCadastrados(){
-	scanner := bufio.NewScanner(os.Stdin)
-
+func produtosCadastrados() {
 	fmt.Println("Produtos cadastrados:")
-		for _, p := range produtos {
-			fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
-		}
+	for _, p := range produtos {
+		fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+	}
 }
 
-func buscaProduto(){
+func buscaProduto() {
 	fmt.Println("Digite o ID do produto:")
-		scanner.Scan()
-		produtoID := scanner.Text()
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	produtoID := scanner.Text()
 
-		//para encontrar o produto pelo id
-		for _, p := range produtos {
-			if produtoID == fmt.Sprint(p.ID) {
-				fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
-				return
-			}
+	//para encontrar o produto pelo id
+	for _, p := range produtos {
+		if produtoID == fmt.Sprint(p.ID) {
+			fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+		} else {
+			fmt.Println("Nenhum produto encotrado com esse ID")
 		}
+	}
 }
 
+func removeProdutoPorID(id int) {
+	for i, produto := range produtos {
+		if produto.ID == id {
+			produtos = append(produtos[:i], produtos[i+1:]...)
+			fmt.Printf("Produto com ID %d removido com sucesso!\n", id)
+			return
+		}
+	}
+	fmt.Printf("Produto com ID %d não encontrado.\n", id)
+}
