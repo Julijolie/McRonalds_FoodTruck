@@ -21,10 +21,11 @@ func main() {
 	for {
 		fmt.Println("Escolha uma opção:")
 		fmt.Println("1. Cadastrar produto")
-		fmt.Println("2. Remover 1 produto")
-		fmt.Println("3. Remover todos os produtos")
-		fmt.Println("4. Busca do produto")
-		fmt.Println("5. Sair")
+		fmt.Println("2. Visualizar produtos cadastrados")
+		fmt.Println("3. Busca do produto pelo id")
+		fmt.Println("4. Remover 1 produto")
+		fmt.Println("5. Remover todos os produtos")
+		fmt.Println("6. Sair")
 
 		var escolha int
 		fmt.Scanln(&escolha)
@@ -37,21 +38,21 @@ func main() {
 				fmt.Println("Limite de 50 produtos atingido!")
 			}
 
-		case 2:
+		case 2: //visualiza produtos
+			produtosCadastrados()
+
+		case 3: //busca pelo id
+			buscaProduto()
+
+		case 4:
 			// remover um produto
 			fmt.Println("Remover Produto")
 
-		case 3:
+		case 5:
 			// remover todos os produtos
 			fmt.Println("Busca do produto")
 
-		case 4:
-			fmt.Println("Produtos cadastrados:")
-			for _, p := range produtos {
-				fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
-			}
-
-		case 5:
+		case 6:
 			os.Exit(0)
 
 		default:
@@ -108,3 +109,27 @@ func cadastraProduto() {
 		produtos = append(produtos, novoProduto)
 	}
 }
+
+func produtosCadastrados(){
+	scanner := bufio.NewScanner(os.Stdin)
+
+	fmt.Println("Produtos cadastrados:")
+		for _, p := range produtos {
+			fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+		}
+}
+
+func buscaProduto(){
+	fmt.Println("Digite o ID do produto:")
+		scanner.Scan()
+		produtoID := scanner.Text()
+
+		//para encontrar o produto pelo id
+		for _, p := range produtos {
+			if produtoID == fmt.Sprint(p.ID) {
+				fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+				return
+			}
+		}
+}
+
