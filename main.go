@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Produto struct {
@@ -15,10 +17,24 @@ type Produto struct {
 	Quantidade int
 }
 
+/*
+
+type Pedido struct{
+	ID int
+	Produtos Produto
+	Data time.Time
+	Valor float64
+}
+*/
+
 var produtos []Produto
-var proximoId = 1
+var proximoId = 0
+var totalPedExpedidos = 0
+
+// var tempoExpedidoTotal time.Time
 
 func main() {
+	LerProdAdcLista()
 	for {
 		fmt.Println("Escolha uma opção:")
 		fmt.Println("1. Cadastrar produto")
@@ -26,7 +42,10 @@ func main() {
 		fmt.Println("3. Busca do produto pelo id")
 		fmt.Println("4. Remover 1 produto")
 		fmt.Println("5. Remover todos os produtos")
-		fmt.Println("6. Sair")
+		fmt.Println("6. Pesquisar pelo nome do produto")
+		//fmt.Println("7. Expedir pedidos")
+		//fmt.Println("8. Tempo médio")
+		fmt.Println("9. Sair")
 
 		var escolha int
 		fmt.Scanln(&escolha)
@@ -57,6 +76,17 @@ func main() {
 			fmt.Println("Todos os produtos foram removido")
 
 		case 6:
+			BuscarProdutoNome()
+
+			/*
+				case 7:
+				ExpedirPedido()
+
+				case 8:
+				MediaTempoExpedicao()
+			*/
+
+		case 9:
 			os.Exit(0)
 
 		default:
@@ -149,3 +179,99 @@ func removeProdutoPorID(id int) {
 	}
 	fmt.Printf("Produto com ID %d não encontrado.\n", id)
 }
+
+//EXTRAS
+
+func LerProdAdcLista() {
+	// Abrir o arquivo texto
+	file, err := os.Open("ProdAdcLista.csv")
+	if err != nil {
+		fmt.Println("Erro ao abrir arquivo ProdAdcLista.csv")
+		return
+	}
+	defer file.Close()
+
+	// Criar um leitor para o arquivo
+	reader := csv.NewReader(file)
+	for {
+		linha, err := reader.Read()
+		if err != nil {
+			break
+		}
+
+		//cria novo produto
+		novoProduto := Produto{}
+
+		novoProduto.ID = proximoId
+		proximoId++
+
+		novoProduto.Nome = linha[0]
+		novoProduto.Descricao = linha[1]
+
+		valor64, err1 := strconv.ParseFloat(linha[2], 64)
+		if err1 != nil {
+			fmt.Println("Erro ao converter valor para float64")
+			return
+		}
+		novoProduto.Valor = valor64
+
+		qtdInt, err2 := strconv.Atoi(linha[3])
+		if err2 != nil {
+			fmt.Println("Erro ao converter valor para inteiro")
+			return
+		}
+		novoProduto.Quantidade = qtdInt
+
+		//Adiciona os produtos na lista
+		produtos = append(produtos, novoProduto)
+	}
+}
+
+/*
+
+func ExpedirPedido(){
+	pedidoExpedido := removePedido() // pedidoExpedido = {1; 2 xburguers, 3 xfrango, 1 xpeixe; 200; 18:00}
+	dataExpedido = time.Now // 18:30
+
+	tempoSub = dataExpedido.Sub(pedidoExpedido.Data).Minutes()
+
+	tempoExpedidoTotal = tempoExpedidoTotal + tempoSub
+	totalPedExpedidos++
+}
+
+func pedidosCadastrados()
+	fmt.Println("Pedidos casdastrados:")
+	for _, p := range pedidos {
+		fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+	}
+}
+*/
+
+func BuscarProdutoNome() {
+	listaResultado := make([]Produto, 0)
+
+	fmt.Println("Qual o nome produto que deseja encontrar?")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	produtoNome := scanner.Text()
+
+	fmt.Println("\n------------------------------")
+
+	// verificar quais produtos da lista produtos começa com as letras do nome pesquisado
+	for _, produto := range produtos {
+		if strings.HasPrefix(strings.ToLower(produto.Nome), produtoNome) {
+			listaResultado = append(listaResultado, produto)
+		}
+	}
+
+	// exibir listaresultado
+	for _, resultado := range listaResultado {
+		fmt.Println("ID", resultado.ID, ":", resultado.Nome, "|", resultado.Descricao, "| Valor:", resultado.Valor, "| Quantidade:", resultado.Quantidade)
+	}
+}
+
+/*
+func MediaTempoExpedicao(){
+	fmt.Print(float64(tempoExpedidoTotal)/float64(totalPedExpedidos))
+}
+*/
