@@ -1,1 +1,0 @@
-produtos = append(produtos, novoProduto)
