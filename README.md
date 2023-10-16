@@ -6,19 +6,36 @@ Este sistema foi desenvolvido para atender às necessidades dos sócios da empre
 Foi criado um menu de opções abaixo permite interações fáceis e rápidas com o sistema.
 
 ### Cadastra produto
-Para cadastrar um novo produto, escolha a opção 1 no menu principal. Siga as instruções apresentadas na CLI para inserir informações como nome, descrição e valor do produto.
+Utilize a opção 1 para cadastrar um novo produto, no menu principal. Siga as instruções apresentadas na CLI para inserir informações como nome, descrição, valor e quantidades de produto em estoque.
 Para voltar para o menu principal, basta digitar "-1" no local onde seria o nome do produto.
 
 ### Visualiza produtos cadastrados
-A opção 2 exibe todos os produtos atualmente cadastrados no sistema. Obtenha uma visão geral rápida dos produtos disponíveis.
+Utilize a opção 2 para exibir todos os produtos atualmente cadastrados no sistema. Obtenha uma visão geral rápida dos produtos disponíveis.
 
 ### Busca o produto por ID
-Utilize a opção 3 para buscar informações detalhadas sobre um produto específico. Informe o identificador único do produto na CLI e obtenha os detalhes desejados.
+Utilize a opção 3 para buscar informações detalhadas sobre um produto específico por ID. Informe o identificador único do produto na CLI e obtenha os detalhes desejados.
 
-### Remove 1 produto
-Se precisar remover um produto específico, escolha a opção 4. Informe o identificador único do produto que deseja excluir e siga as instruções apresentadas.
+### Busca o produto por Nome
+Utilize a opção 4 para buscar informações detalhadas sobre um produto específico pelo primeiro nome. Informe o nome ou a primeira letra do produto na CLI e obtenha os detalhes desejados.
 
-### 
+### Remover um produto
+Utilize a opção 5 para remover um produto específico. Informe o identificador único do produto que deseja excluir e siga as instruções apresentadas.
+
+### Remover todos os produtos
+Utilize a opção 6 para limpar sua CLI. ####Atenção####, esta opção remove todos os seus produtos cadastrados.
+
+### Expedir pedidos
+---
+
+### Média de tempo para expedição dos pedidos
+---
+
+### Finalizar Sistema
+Utilize a opção 9 para encerrar o sistema. 
+
+
+#### **Obrigada por utilizar nosso sistema. :)**
+
 
 ## Integrantes:
 ***Amanda Senra***
