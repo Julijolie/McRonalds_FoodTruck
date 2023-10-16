@@ -15,8 +15,21 @@ type Produto struct {
 	Quantidade int
 }
 
+type Pedido struct {
+	ID         int
+	Delivery   bool
+	Produtos   [10]Produto
+	ValorTotal float64
+	Status     bool
+}
+
 var produtos []Produto
 var proximoId = 1
+var Pedidos []Pedido
+var proximoIdPedido = 1
+var i = 0
+var parada = true
+const valorDelivery = 10
 
 func main() {
 	for {
@@ -26,45 +39,85 @@ func main() {
 		fmt.Println("3. Busca do produto pelo id")
 		fmt.Println("4. Remover 1 produto")
 		fmt.Println("5. Remover todos os produtos")
-		fmt.Println("6. Sair")
+		fmt.Println("6. Adicionar pedido")
+		fmt.Println("7. Expedir pedido")
+		fmt.Println("8. Exibir métricas")
+		fmt.Println("9. Sair")
 
 		var escolha int
 		fmt.Scanln(&escolha)
 
 		switch escolha {
-		case 1: // cadastra
-			if len(produtos) < 50 {
-				cadastraProduto()
-			} else {
-				fmt.Println("Limite de 50 produtos atingido!")
+			case 1: // cadastra
+				if len(produtos) < 50 {
+					cadastraProduto()
+				} else {
+					fmt.Println("Limite de 50 produtos atingido!")
+				}
+
+			case 2: //visualiza produtos
+				produtosCadastrados()
+
+			case 3: //busca pelo id
+				fmt.Println("Digite o ID do produto:")
+				scanner := bufio.NewScanner(os.Stdin)
+				scanner.Scan()
+				produtoID, err := strconv.Atoi(scanner.Text())
+				if err != nil {
+					fmt.Println("O id necessita ser um inteiro!")
+				}else{
+					fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", buscaProduto(produtoID).ID, buscaProduto(produtoID).Nome, buscaProduto(produtoID).Descricao, buscaProduto(produtoID).Valor, buscaProduto(produtoID).Quantidade)
+				}
+			case 4: // remover um produto
+				fmt.Print("Digite o ID do produto que você deseja remover: ")
+				var idParaRemover int
+				fmt.Scanln(&idParaRemover)
+				removeProdutoPorID(idParaRemover)
+
+			case 5:
+				// remover todos os produtos
+				produtos = nil
+				fmt.Println("Todos os produtos foram removido")
+			
+			case 6:
+				novoPedido := Pedido{}
+				novoPedido.ID = proximoIdPedido
+				proximoIdPedido++
+				var id int
+				for{
+					fmt.Print("Digite o ID do produto que deseja adicionar ao seu pedido, caso queira parar digite -1 : ")
+					fmt.Scanln(&id)
+					novoPedido.Produtos.(buscaProduto(&id))
+					novoPedido.ValorTotal += buscaProduto(&id).ValorTotal
+					if id == -1 {
+						if novoPedido.Produtos != nil {
+							fmt.Print("Digite True se o seu pedido for delivery e false caso contrário : ")
+							var delivery bool
+							fmt.Scanln(delivery)
+							novoPedido.Delivery = delivery
+							AdicionaPedido(id, novoPedido)
+							Pedidos.append(Pedidos, novoPedido)
+							if novoPedido.Delivery == true {
+								novoPedido.ValorTotal = novoPedido.ValorTotal + valorDelivery
+							} 
+							break
+						}else{
+							break
+						}
+					}
+				}
+			//case 7:
+			
+			case 9:
+				os.Exit(0)
+
+			default:
+				fmt.Println("Opção inválida!")
 			}
-
-		case 2: //visualiza produtos
-			produtosCadastrados()
-
-		case 3: //busca pelo id
-			buscaProduto()
-
-		case 4: // remover um produto
-			fmt.Print("Digite o ID do produto que você deseja remover: ")
-			var idParaRemover int
-			fmt.Scanln(&idParaRemover)
-			removeProdutoPorID(idParaRemover)
-
-		case 5:
-			// remover todos os produtos
-			produtos = nil
-			fmt.Println("Todos os produtos foram removido")
-
-		case 6:
-			os.Exit(0)
-
-		default:
-			fmt.Println("Opção inválida!")
+			fmt.Println("-------------------------------")
 		}
-		fmt.Println("-------------------------------")
 	}
-}
+
 
 func cadastraProduto() {
 	scanner := bufio.NewScanner(os.Stdin)
@@ -123,18 +176,14 @@ func produtosCadastrados() {
 	}
 }
 
-func buscaProduto() {
-	fmt.Println("Digite o ID do produto:")
-	scanner := bufio.NewScanner(os.Stdin)
-	scanner.Scan()
-	produtoID := scanner.Text()
-
+func buscaProduto(produtoId int)Produto{
 	//para encontrar o produto pelo id
 	for _, p := range produtos {
-		if produtoID == fmt.Sprint(p.ID) {
-			fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+		if produtoId == p.ID{
+			return p
 		} else {
-			fmt.Println("Nenhum produto encotrado com esse ID")
+			fmt.Println("Não achamos o produto!")
+			break
 		}
 	}
 }
@@ -148,4 +197,28 @@ func removeProdutoPorID(id int) {
 		}
 	}
 	fmt.Printf("Produto com ID %d não encontrado.\n", id)
+}
+
+func AdicionaPedido(id int,novoPedido Pedido) {
+	for _, p := range produtos {
+		if id == p.ID {
+			if p.Quantidade == 0 {
+				fmt.Println("O produto está sem estoque")
+				proximoIdPedido--
+			}else{
+				novoPedido.ValorTotal = novoPedido.ValorTotal + p.Valor
+				novoPedido.Produtos[i] = p
+				i++
+				p.Quantidade--
+			}
+		} else {
+			fmt.Println("Nenhum produto encotrado com esse ID")
+		}
+	}
+}
+
+
+
+func expedirPedidos(){
+	
 }
