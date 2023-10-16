@@ -12,12 +12,16 @@ type Pedido struct{
 	Produtos [10]prd.Produto
 	Data time.Time
 	ValorTotal float64
-	delivery bool
+	Delivery bool
 }
 
 var idPedido = 1
+var ListaPedidos [1000]Pedido
+var tamanhoListaPedidos = 0
 
-func AdicionaPedido(id int,novoPedido Pedido) {
+func AdicionaPedido() {
+	novoPedido := Pedido{}
+	
 	novoPedido.ID = idPedido
 	idPedido++
 
@@ -26,10 +30,10 @@ func AdicionaPedido(id int,novoPedido Pedido) {
 	fmt.Scanln(&resposta)
 
 	if resposta == "S"{
-		novoPedido.delivery = true
+		novoPedido.Delivery = true
 		novoPedido.ValorTotal += 10.00
 	}else{
-		novoPedido.delivery = false
+		novoPedido.Delivery = false
 	}
 
 	novaListaProduto := [10]prd.Produto{}
@@ -59,9 +63,27 @@ func AdicionaPedido(id int,novoPedido Pedido) {
 	}
 
 	novoPedido.Data = time.Now()
+
+	AdicionaPedidoLista(novoPedido)
 	
 	fmt.Println("Pedido adicionado com sucesso!")
 
+}
+
+func AdicionaPedidoLista(ped Pedido) {
+	if tamanhoListaPedidos > 1000 {
+		fmt.Println("Limite de 1000 pedidos atingido!")
+		return
+	}
+	ListaPedidos[tamanhoListaPedidos] = ped
+	tamanhoListaPedidos++  
+}
+
+func PedidosCadastrados(){
+	fmt.Println("Pedidos casdastrados:")
+	for _, p := range ListaPedidos {
+		fmt.Printf("ID: %d, Data: %s, Valor: %.2f, Delivery: %t, Produtos: %v\n", p.ID, p.Data, p.ValorTotal, p.Delivery, p.Produtos)
+	}
 }
 
 /*
@@ -76,10 +98,5 @@ func ExpedirPedido(){
 	totalPedExpedidos++
 }
 
-func pedidosCadastrados()
-	fmt.Println("Pedidos casdastrados:")
-	for _, p := range pedidos {
-		fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
-	}
-}
+
 */

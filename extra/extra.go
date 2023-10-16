@@ -56,7 +56,6 @@ func LerProdAdcLista() {
 }
 
 
-
 /*
 func MediaTempoExpedicao(){
 	fmt.Print(float64(tempoExpedidoTotal)/float64(totalPedExpedidos))
