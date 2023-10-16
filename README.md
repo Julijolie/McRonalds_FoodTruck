@@ -22,7 +22,7 @@ Utilize a opção 4 para buscar informações detalhadas sobre um produto espec�
 Utilize a opção 5 para remover um produto específico. Informe o identificador único do produto que deseja excluir e siga as instruções apresentadas.
 
 ### Remover todos os produtos
-Utilize a opção 6 para limpar sua CLI. #### Atenção ####, esta opção remove todos os seus produtos cadastrados.
+Utilize a opção 6 para limpar sua CLI. Atenção, esta opção remove todos os seus produtos cadastrados.
 
 ### Expedir pedidos
 Esperando atualização
@@ -34,7 +34,7 @@ Esperando atualização
 Utilize a opção 9 para encerrar o sistema. 
 
 ---
-## Obrigada por utilizar nosso sistema. :)
+#### Obrigada por utilizar nosso sistema. :)
 
 
 ## Integrantes:
