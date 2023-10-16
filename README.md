@@ -34,8 +34,6 @@ Esperando atualização
 Utilize a opção 9 para encerrar o sistema. 
 
 ---
-#### Obrigada por utilizar nosso sistema. :)
-
 
 ## Integrantes:
 ***Amanda Senra***
@@ -45,4 +43,8 @@ Utilize a opção 9 para encerrar o sistema.
 ***Juliana de Oliveira***
 
 ***Matheus Herzog***
+
+---
+
+## Obrigada por utilizar nosso sistema. :)
 
