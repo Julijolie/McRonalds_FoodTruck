@@ -24,7 +24,7 @@ func main() {
 		fmt.Println("3. Busca do produto pelo id")
 		fmt.Println("4. Remover 1 produto")
 		fmt.Println("5. Remover todos os produtos")
-		fmt.Println("6. Sair")
+		fmt.Println("6. Busca do produto pelo nome")
 
 		var escolha int
 		fmt.Scanln(&escolha)
@@ -50,12 +50,11 @@ func main() {
 			fmt.Scanln(&idParaRemover)
 			operacoes.RemoveProdutoPorID(idParaRemover)
 
-		case 5:
-			// remover todos os produtos
+		case 5:	// remover todos os produtos
 			listaDeProdutos = nil
 			fmt.Println("Todos os produtos foram removido")
 
-		case 6:
+		case 6: // busca produto pelo nome
 			operacoes.BuscarProdutoNome()
 
 			/*
