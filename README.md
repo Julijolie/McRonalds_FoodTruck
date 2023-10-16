@@ -21,8 +21,11 @@ Se precisar remover um produto específico, escolha a opção 4. Informe o ident
 ### 
 
 ## Integrantes:
-Amanda
-Gabriel Martinez
-Juliana de Oliveira
-Mateus
+***Amanda***
+
+***Gabriel Martinez***
+
+***Juliana de Oliveira***
+
+***Mateus***
 
