@@ -6,13 +6,12 @@ import (
 	"time"
 )
 
-
-type Pedido struct{
-	ID int
-	Produtos [10]prd.Produto
-	Data time.Time
+type Pedido struct {
+	ID         int
+	Produtos   [10]prd.Produto
+	Data       time.Time
 	ValorTotal float64
-	Delivery bool
+	Delivery   bool
 }
 
 var idPedido = 1
@@ -29,18 +28,18 @@ func AdicionaPedido() {
 	fmt.Println("Pedido é para Delivery? (S/N)")
 	fmt.Scanln(&resposta)
 
-	if resposta == "S"{
+	if resposta == "S" {
 		novoPedido.Delivery = true
 		novoPedido.ValorTotal += 10.00
-	}else{
+	} else {
 		novoPedido.Delivery = false
 	}
 
 	novaListaProduto := [10]prd.Produto{}
 	i := 0
 
-	for{
-		if i == 10{
+	for {
+		if i == 10 {
 			break
 		}
 
@@ -65,9 +64,8 @@ func AdicionaPedido() {
 	novoPedido.Data = time.Now()
 
 	AdicionaPedidoLista(novoPedido)
-	
-	fmt.Println("Pedido adicionado com sucesso!")
 
+	fmt.Println("Pedido adicionado com sucesso!")
 }
 
 func AdicionaPedidoLista(ped Pedido) {
@@ -76,10 +74,10 @@ func AdicionaPedidoLista(ped Pedido) {
 		return
 	}
 	ListaPedidos[tamanhoListaPedidos] = ped
-	tamanhoListaPedidos++  
+	tamanhoListaPedidos++
 }
 
-func PedidosCadastrados(){
+func PedidosCadastrados() {
 	fmt.Println("Pedidos casdastrados:")
 	for _, p := range ListaPedidos {
 		fmt.Printf("ID: %d, Data: %s, Valor: %.2f, Delivery: %t, Produtos: %v\n", p.ID, p.Data, p.ValorTotal, p.Delivery, p.Produtos)
