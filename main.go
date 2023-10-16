@@ -2,9 +2,11 @@ package main
 
 import (
 	"bufio"
+	"encoding/csv"
 	"fmt"
 	"os"
 	"strconv"
+	"strings"
 )
 
 type Produto struct {
@@ -25,13 +27,9 @@ type Pedido struct {
 
 var produtos []Produto
 var proximoId = 1
-var Pedidos []Pedido
-var proximoIdPedido = 1
-var i = 0
-var parada = true
-const valorDelivery = 10
 
 func main() {
+	LerProdAdcLista()
 	for {
 		fmt.Println("Escolha uma opção:")
 		fmt.Println("1. Cadastrar produto")
@@ -39,10 +37,7 @@ func main() {
 		fmt.Println("3. Busca do produto pelo id")
 		fmt.Println("4. Remover 1 produto")
 		fmt.Println("5. Remover todos os produtos")
-		fmt.Println("6. Adicionar pedido")
-		fmt.Println("7. Expedir pedido")
-		fmt.Println("8. Exibir métricas")
-		fmt.Println("9. Sair")
+		fmt.Println("6. Sair")
 
 		var escolha int
 		fmt.Scanln(&escolha)
@@ -74,42 +69,23 @@ func main() {
 				fmt.Scanln(&idParaRemover)
 				removeProdutoPorID(idParaRemover)
 
-			case 5:
-				// remover todos os produtos
-				produtos = nil
-				fmt.Println("Todos os produtos foram removido")
-			
-			case 6:
-				novoPedido := Pedido{}
-				novoPedido.ID = proximoIdPedido
-				proximoIdPedido++
-				var id int
-				for{
-					fmt.Print("Digite o ID do produto que deseja adicionar ao seu pedido, caso queira parar digite -1 : ")
-					fmt.Scanln(&id)
-					novoPedido.Produtos.(buscaProduto(&id))
-					novoPedido.ValorTotal += buscaProduto(&id).ValorTotal
-					if id == -1 {
-						if novoPedido.Produtos != nil {
-							fmt.Print("Digite True se o seu pedido for delivery e false caso contrário : ")
-							var delivery bool
-							fmt.Scanln(delivery)
-							novoPedido.Delivery = delivery
-							AdicionaPedido(id, novoPedido)
-							Pedidos.append(Pedidos, novoPedido)
-							if novoPedido.Delivery == true {
-								novoPedido.ValorTotal = novoPedido.ValorTotal + valorDelivery
-							} 
-							break
-						}else{
-							break
-						}
-					}
-				}
-			//case 7:
-			
-			case 9:
-				os.Exit(0)
+		case 6:
+			// remover todos os produtos
+			produtos = nil
+			fmt.Println("Todos os produtos foram removido")
+
+		
+
+			/*
+				case 7:
+				ExpedirPedido()
+
+				case 8:
+				MediaTempoExpedicao()
+			*/
+
+		case 9:
+			os.Exit(0)
 
 			default:
 				fmt.Println("Opção inválida!")
@@ -222,3 +198,99 @@ func AdicionaPedido(id int,novoPedido Pedido) {
 func expedirPedidos(){
 	
 }
+
+//EXTRAS
+
+func LerProdAdcLista() {
+	// Abrir o arquivo texto
+	file, err := os.Open("ProdAdcLista.csv")
+	if err != nil {
+		fmt.Println("Erro ao abrir arquivo ProdAdcLista.csv")
+		return
+	}
+	defer file.Close()
+
+	// Criar um leitor para o arquivo
+	reader := csv.NewReader(file)
+	for {
+		linha, err := reader.Read()
+		if err != nil {
+			break
+		}
+
+		//cria novo produto
+		novoProduto := Produto{}
+
+		novoProduto.ID = proximoId
+		proximoId++
+
+		novoProduto.Nome = linha[0]
+		novoProduto.Descricao = linha[1]
+
+		valor64, err1 := strconv.ParseFloat(linha[2], 64)
+		if err1 != nil {
+			fmt.Println("Erro ao converter valor para float64")
+			return
+		}
+		novoProduto.Valor = valor64
+
+		qtdInt, err2 := strconv.Atoi(linha[3])
+		if err2 != nil {
+			fmt.Println("Erro ao converter valor para inteiro")
+			return
+		}
+		novoProduto.Quantidade = qtdInt
+
+		//Adiciona os produtos na lista
+		produtos = append(produtos, novoProduto)
+	}
+}
+
+/*
+
+func ExpedirPedido(){
+	pedidoExpedido := removePedido() // pedidoExpedido = {1; 2 xburguers, 3 xfrango, 1 xpeixe; 200; 18:00}
+	dataExpedido = time.Now // 18:30
+
+	tempoSub = dataExpedido.Sub(pedidoExpedido.Data).Minutes()
+
+	tempoExpedidoTotal = tempoExpedidoTotal + tempoSub
+	totalPedExpedidos++
+}
+
+func pedidosCadastrados()
+	fmt.Println("Pedidos casdastrados:")
+	for _, p := range pedidos {
+		fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
+	}
+}
+*/
+
+func BuscarProdutoNome() {
+	listaResultado := make([]Produto, 0)
+
+	fmt.Println("Qual o nome produto que deseja encontrar?")
+	scanner := bufio.NewScanner(os.Stdin)
+	scanner.Scan()
+	produtoNome := scanner.Text()
+
+	fmt.Println("\n------------------------------")
+
+	// verificar quais produtos da lista produtos começa com as letras do nome pesquisado
+	for _, produto := range produtos {
+		if strings.HasPrefix(strings.ToLower(produto.Nome), produtoNome) {
+			listaResultado = append(listaResultado, produto)
+		}
+	}
+
+	// exibir listaresultado
+	for _, resultado := range listaResultado {
+		fmt.Println("ID", resultado.ID, ":", resultado.Nome, "|", resultado.Descricao, "| Valor:", resultado.Valor, "| Quantidade:", resultado.Quantidade)
+	}
+}
+
+/*
+func MediaTempoExpedicao(){
+	fmt.Print(float64(tempoExpedidoTotal)/float64(totalPedExpedidos))
+}
+*/
