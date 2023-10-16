@@ -2,10 +2,10 @@
 Esta é documentação do nosso sistema de gerenciamento de produtos e pedidos de um de Food Truck , que deve rodar em CLI (Command Line Interface) . 
 Este sistema foi desenvolvido para atender às necessidades dos sócios da empresa, permitindo o cadastro, remoção, busca e exibição de produtos, bem como o registro e expedição de pedidos.
 
-## Funcionalidades
+* ## Funcionalidades
 Foi criado um menu de opções abaixo permite interações fáceis e rápidas com o sistema.
 
-### Cadastra produto
+* ### Cadastra produto
 Utilize a opção 1 para cadastrar um novo produto, no menu principal. Siga as instruções apresentadas na CLI para inserir informações como nome, descrição, valor e quantidades de produto em estoque.
 Para voltar para o menu principal, basta digitar "-1" no local onde seria o nome do produto.
 
