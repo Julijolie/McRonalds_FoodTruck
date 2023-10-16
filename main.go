@@ -64,19 +64,21 @@ func main() {
 		case 3: //busca pelo id
 			buscaProduto()
 
-		case 4: // remover um produto
+		case 4:
+			BuscarProdutoNome()
+
+		case 5: // remover um produto
 			fmt.Print("Digite o ID do produto que você deseja remover: ")
 			var idParaRemover int
 			fmt.Scanln(&idParaRemover)
 			removeProdutoPorID(idParaRemover)
 
-		case 5:
+		case 6:
 			// remover todos os produtos
 			produtos = nil
 			fmt.Println("Todos os produtos foram removido")
 
-		case 6:
-			BuscarProdutoNome()
+		
 
 			/*
 				case 7:
