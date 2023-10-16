@@ -13,22 +13,7 @@ var proximoId = 1
 var totalPedExpedidos = 0
 
 // var tempoExpedidoTotal time.Time
-=======
-type Produto struct {
-	ID         int
-	Nome       string
-	Descricao  string
-	Valor      float64
-	Quantidade int
-}
 
-type Pedido struct {
-	ID         int
-	Delivery   bool
-	Produtos   [10]Produto
-	ValorTotal float64
-	Status     bool
-}
 
 func main() {
 	operacoes.LerProdAdcLista()
