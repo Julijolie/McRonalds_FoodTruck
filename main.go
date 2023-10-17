@@ -53,7 +53,7 @@ func main() {
 			scanner := bufio.NewScanner(os.Stdin)
 			scanner.Scan()
 			produtoID := scanner.Text()
-			fmt.Println("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", operacoes.BuscaProduto(produtoID).ID, operacoes.BuscaProduto(produtoID).Nome, operacoes.BuscaProduto(produtoID).Descricao, operacoes.BuscaProduto(produtoID).Valor, operacoes.BuscaProduto(produtoID).Quantidade)
+			fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", operacoes.BuscaProduto(produtoID).ID, operacoes.BuscaProduto(produtoID).Nome, operacoes.BuscaProduto(produtoID).Descricao, operacoes.BuscaProduto(produtoID).Valor, operacoes.BuscaProduto(produtoID).Quantidade)
 
 		case 4: // remover um produto
 			fmt.Print("Digite o ID do produto que você deseja remover: ")
@@ -61,8 +61,7 @@ func main() {
 			fmt.Scanln(&idParaRemover)
 			operacoes.RemoveProdutoPorID(idParaRemover)
 
-		case 5:
-			// remover todos os produtos
+		case 5:	// remover todos os produtos
 			listaDeProdutos = nil
 			fmt.Println("Todos os produtos foram removido")
 
