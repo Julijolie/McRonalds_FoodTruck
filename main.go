@@ -25,7 +25,7 @@ func main() {
 		fmt.Println("6. Pesquisar pelo nome do produto")
 		fmt.Println("7. Remover 1 produto")
 		fmt.Println("8. Remover todos os produtos")
-		//fmt.Println("9. Expedir pedidos")
+		fmt.Println("9. Expedir pedidos")
 		//fmt.Println("10. Tempo médio")
 		//fmt.Println("11. metrícas")
 		fmt.Println("12. Sair")
@@ -77,13 +77,13 @@ func main() {
 			prd.ListaProdutos = [50]prd.Produto{}
 			fmt.Println("Todos os produtos foram removido")
 
-			/*
-				case 9:
-				ExpedirPedido()
-
-				case 10:
-				MediaTempoExpedicao()
-			*/
+		case 9:
+			ped.ExpedirPedido()
+		
+		/*
+			case 10:
+			MediaTempoExpedicao()
+		*/
 
 		case 12:
 			os.Exit(0)

@@ -118,17 +118,19 @@ func PedidosCadastrados(){
 	}
 }
 
-/*
 
 func ExpedirPedido(){
-	pedidoExpedido := removePedido() // pedidoExpedido = {1; 2 xburguers, 3 xfrango, 1 xpeixe; 200; 18:00}
-	dataExpedido = time.Now // 18:30
+	if tamanhoListaPedidos <= 0{
+		fmt.Println("Não há pedidos cadastrados")
+		return
+	}
 
-	tempoSub = dataExpedido.Sub(pedidoExpedido.Data).Minutes()
-
-	tempoExpedidoTotal = tempoExpedidoTotal + tempoSub
-	totalPedExpedidos++
+	for i, p := range ListaPedidos{
+		if p == (Pedido{}){
+			continue
+		}
+		ListaPedidos[i] = Pedido{}
+		fmt.Println("Pedido expedido com sucesso!")
+		return 
+	}
 }
-
-
-*/
