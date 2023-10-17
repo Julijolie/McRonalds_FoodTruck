@@ -9,10 +9,15 @@ import (
 
 type Pedido struct{
 	ID int
-	Produtos [10]prd.Produto
+	Produtos [10]PedidoProduto
 	Data time.Time
 	ValorTotal float64
 	Delivery bool
+}
+
+type PedidoProduto struct{
+	Produto prd.Produto
+	Quantidade int
 }
 
 var idPedido = 1
@@ -29,14 +34,18 @@ func AdicionaPedido() {
 	fmt.Println("Pedido é para Delivery? (S/N)")
 	fmt.Scanln(&resposta)
 
-	if resposta == "S"{
-		novoPedido.Delivery = true
-		novoPedido.ValorTotal += 10.00
-	}else{
-		novoPedido.Delivery = false
+	switch resposta {
+		case "S", "s":
+			novoPedido.Delivery = true
+			novoPedido.ValorTotal += 10.00
+		case "N", "n":
+			novoPedido.Delivery = false
+		default:
+			fmt.Println("Resposta inválida!")
+			return
 	}
 
-	novaListaProduto := [10]prd.Produto{}
+	novaListaProduto := [10]PedidoProduto{}
 	i := 0
 
 	for{
@@ -56,11 +65,24 @@ func AdicionaPedido() {
 		var quantidade int
 		fmt.Scanln(&quantidade)
 
-		novaListaProduto[i] = produto
+		novoPedidoProduto := PedidoProduto{}
+		novoPedidoProduto.Produto = produto
+		novoPedidoProduto.Quantidade = quantidade
+
+		novaListaProduto[i] = novoPedidoProduto
 		i++
 
-		novoPedido.ValorTotal += float64(quantidade) * novoPedido.Produtos[i].Valor
+		novoPedido.ValorTotal += float64(novoPedidoProduto.Quantidade) * novoPedido.ValorTotal
+
+		fmt.Println("Deseja adicionar mais produtos? (S/N)")
+		fmt.Scanln(&resposta)
+
+		if resposta == "N" || resposta == "n"{
+			break
+		}
 	}
+
+	novoPedido.Produtos = novaListaProduto
 
 	novoPedido.Data = time.Now()
 
@@ -82,7 +104,17 @@ func AdicionaPedidoLista(ped Pedido) {
 func PedidosCadastrados(){
 	fmt.Println("Pedidos casdastrados:")
 	for _, p := range ListaPedidos {
-		fmt.Printf("ID: %d, Data: %s, Valor: %.2f, Delivery: %t, Produtos: %v\n", p.ID, p.Data, p.ValorTotal, p.Delivery, p.Produtos)
+		if p == (Pedido{}) {
+			continue
+		}
+		fmt.Printf(" ID: %d \n Data: %s \n Valor: %.2f \n Delivery: %t \n Produtos: ", p.ID, p.Data.Format("02/01/2006 15:04:05"), p.ValorTotal, p.Delivery, )
+		for _, prod := range p.Produtos{
+			if prod == (PedidoProduto{}){
+				continue
+			}
+			fmt.Printf("%dx de %s ;", prod.Quantidade, prod.Produto.Nome)
+		}
+		fmt.Printf("\n")
 	}
 }
 

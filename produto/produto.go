@@ -17,13 +17,16 @@ type Produto struct {
 }
 
 var ListaProdutos [50]Produto
-var tamanhoListaProdutos = 0
-var proximoId = 0
+var TamanhoListaProdutos = 0
+var ProximoId = 1
 
 
 func ProdutosCadastrados() {
 	fmt.Println("Produtos cadastrados:")
 	for _, p := range ListaProdutos {
+		if p == (Produto{}) {
+			continue
+		}
 		fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
 	}
 }
@@ -32,11 +35,8 @@ func BuscaProduto(produtoID string) Produto {
 	//para encontrar o produto pelo id
 	for _, p := range ListaProdutos {
 		if produtoID == fmt.Sprint(p.ID) {
-			fmt.Printf("Produto Encontrado:\nID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", p.ID, p.Nome, p.Descricao, p.Valor, p.Quantidade)
 			return p
-		} else {
-			fmt.Println("Nenhum produto encotrado com esse ID")
-		}
+		} 
 	}
 	return Produto{}
 }
@@ -56,8 +56,8 @@ func CadastraProduto() {
 		}
 		novoProduto.Nome = nome
 
-		novoProduto.ID = proximoId
-		proximoId++
+		novoProduto.ID = ProximoId
+		ProximoId++
 
 		fmt.Print("Descrição do produto: ")
 		scanner.Scan()
@@ -92,23 +92,30 @@ func CadastraProduto() {
 }
 
 func AdicionaProdutoLista(prod Produto) {
-	if tamanhoListaProdutos > 50 {
+	if TamanhoListaProdutos > 50 {
 		fmt.Println("Limite de 50 produtos atingido!")
 		return
 	}
-	ListaProdutos[tamanhoListaProdutos] = prod
-	tamanhoListaProdutos++
+	ListaProdutos[TamanhoListaProdutos] = prod
+	TamanhoListaProdutos++
 }
 
 
 func RemoveProdutoPorID(id int) {
-	if tamanhoListaProdutos <= 0{
+	if TamanhoListaProdutos <= 0{
 		fmt.Println("Não há produtos cadastrados")
 		return
 	}
-	ListaProdutos[id] = Produto{}
-	tamanhoListaProdutos--
+	for i, produto := range ListaProdutos {
+		if produto.ID == id {
+			ListaProdutos[i] = Produto{}
+			fmt.Println("Produto removido com sucesso!")
+			return
+		}
+	}
+	fmt.Println("Não foi encontrado nenhum produto com esse ID")
 }
+	
 
 func BuscarProdutoNome() {
 	listaResultado := make([]Produto, 0)

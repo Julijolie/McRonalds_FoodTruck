@@ -35,7 +35,7 @@ func main() {
 
 		switch escolha {
 		case 1: // cadastra produto
-			if len(prd.ListaProdutos) < 50 {
+			if prd.TamanhoListaProdutos < 50 {
 				prd.CadastraProduto()
 			} else {
 				fmt.Println("Limite de 50 produtos atingido!")
@@ -59,9 +59,9 @@ func main() {
 			scanner := bufio.NewScanner(os.Stdin)
 			scanner.Scan()
 			produtoID := scanner.Text()
-			prd.BuscaProduto(produtoID)
-
-
+			prod := prd.BuscaProduto(produtoID)
+			fmt.Printf("ID: %d, Nome: %s, Descrição: %s, Valor: %.2f, Quantidade: %d\n", prod.ID, prod.Nome, prod.Descricao, prod.Valor, prod.Quantidade)
+		
 		case 6:
 			prd.BuscarProdutoNome()
 

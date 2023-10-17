@@ -8,8 +8,6 @@ import (
 	prd "McRonald/produto"
 )
 
-var proximoId = 0
-
 func LerProdAdcLista() {
 	// Abrir o arquivo texto
 	file, err := os.Open("ProdAdcLista.csv")
@@ -30,8 +28,8 @@ func LerProdAdcLista() {
 		//cria novo produto
 		novoProduto := prd.Produto{}
 
-		novoProduto.ID = proximoId
-		proximoId++
+		novoProduto.ID = prd.ProximoId
+		prd.ProximoId++
 
 		novoProduto.Nome = linha[0]
 		novoProduto.Descricao = linha[1]
